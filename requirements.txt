@@ -1,0 +1,11 @@
+# Managed with UV: use pyproject.toml + uv.lock as the source of truth.
+#
+# Install and build:
+#   uv sync
+#   uv run mkdocs build
+#
+# If something only understands requirements.txt:
+#   uv pip sync -r requirements.txt
+mkdocs>=1.6.0,<2
+mkdocs-material>=9.5.0,<10
+mkdocs-print-site-plugin>=2.0.0

@@ -1,0 +1,83 @@
+site_name: Cursor Best Practices
+site_description: A practical structure for using AI in development—cost, quality, and workflows.
+
+docs_dir: docs
+
+theme:
+  name: material
+  custom_dir: overrides
+  icon:
+    logo: material/book-open-page-variant
+  palette:
+    # Light UI aligned with promptingguide.ai (Nextra): white bar, soft shadow, violet accent
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: "JetBrains Mono"
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - content.code.copy
+
+extra:
+  generator: false
+  author_attribution: By Ajay Kiran Patil
+
+plugins:
+  - search
+  - print-site:
+      add_to_navigation: true
+      print_page_title: Download / print full outline
+      add_table_of_contents: true
+      toc_title: On this page (print view)
+      # Default true: numbers headings across the whole print page (Home=1, so Intro’s first ## looks like 2.1).
+      enumerate_headings: false
+      enumerate_figures: false
+
+nav:
+  - Home: index.md
+  - Introduction — AI as a Force Multiplier: introduction-ai-as-a-force-multiplier.md
+  - Core Principles of Effective AI Usage: core-principles-of-effective-ai-usage.md
+  - Developer Thinking Frameworks: developer-thinking-frameworks.md
+  - Prompt Engineering Foundations: prompt-engineering-foundations.md
+  - Advanced Prompting Techniques: advanced-prompting-techniques.md
+  - "Model Usage Strategy (Cost vs. Capability)": model-usage-strategy.md
+  - Productivity Engineering with AI: productivity-engineering-with-ai.md
+  - Development Workflows with AI: development-workflows-with-ai.md
+  - Code Quality and Maintainability: code-quality-and-maintainability.md
+  - Performance-Aware Development: performance-aware-development.md
+  - Risk Management and Critical Systems: risk-management-and-critical-systems.md
+  - Cost Optimization Playbook: cost-optimization-playbook.md
+  - "Anti-Patterns (Critical Section)": anti-patterns.md
+  - Reusable Assets and Internal Libraries: reusable-assets-and-internal-libraries.md
+  - Real-World Case Studies: real-world-case-studies.md
+  - Measuring Impact: measuring-impact.md
+  - Future of AI-Assisted Development: future-of-ai-assisted-development.md
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - tables

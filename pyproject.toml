@@ -1,0 +1,10 @@
+[project]
+name = "ajay-book"
+version = "0.1.0"
+description = "Cursor Best Practices — MkDocs site"
+requires-python = ">=3.10"
+dependencies = [
+    "mkdocs>=1.6.0,<2",
+    "mkdocs-material>=9.5.0,<10",
+    "mkdocs-print-site-plugin>=2.0.0",
+]

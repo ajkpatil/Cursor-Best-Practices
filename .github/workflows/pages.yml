@@ -1,0 +1,88 @@
+# Build with UV and deploy static site/ to GitHub Pages.
+# Repo → Settings → Pages → Build and deployment → Source: GitHub Actions
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set site_url for GitHub Pages
+        run: |
+          python3 << 'EOF'
+          import os
+          import pathlib
+
+          owner = os.environ["GITHUB_REPOSITORY_OWNER"]
+          repo = os.environ["GITHUB_REPOSITORY"].split("/")[-1]
+          if repo.endswith(".github.io"):
+              url = f"https://{owner}.github.io/"
+          else:
+              url = f"https://{owner}.github.io/{repo}/"
+
+          path = pathlib.Path("mkdocs.yml")
+          text = path.read_text()
+          lines = text.splitlines(keepends=True)
+
+          if any(line.strip().startswith("site_url:") for line in lines):
+              new_lines = []
+              for line in lines:
+                  if line.strip().startswith("site_url:"):
+                      new_lines.append(f"site_url: {url}\n")
+                  else:
+                      new_lines.append(line)
+              path.write_text("".join(new_lines))
+          else:
+              out = []
+              inserted = False
+              for line in lines:
+                  out.append(line)
+                  if not inserted and line.startswith("site_name:"):
+                      out.append(f"site_url: {url}\n")
+                      inserted = True
+              path.write_text("".join(out))
+
+          print("site_url:", url)
+          EOF
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Build site
+        run: uv run mkdocs build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
